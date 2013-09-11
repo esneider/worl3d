@@ -12,14 +12,11 @@
 
     function newCamera() {
 
-        var viewAngle = 75; // from bottom to top of view, in degrees
         var aspectRatio = window.innerWidth / window.innerHeight;
-        var nearPlane = 1;
-        var farPlane = 10000;
-
-        var camera = new THREE.PerspectiveCamera(viewAngle, aspectRatio, nearPlane, farPlane);
+        var camera = new THREE.PerspectiveCamera(75, aspectRatio, 1, 10000);
 
         camera.position.z = 1000;
+        // camera.lookAt(); TODO
 
         return camera;
     }
@@ -79,13 +76,27 @@
         return stats;
     }
 
+    function newControls(camera) {
+
+        var controls = new THREE.FirstPersonControls(camera);
+
+        controls.movementSpeed = 500;
+        controls.lookSpeed = 0.15;
+        controls.lookVertical = true;
+        controls.mouseInactiveWindow = 0.3;
+
+        return controls;
+    }
+
     function initWorld() {
 
         world.camera = newCamera();
+        world.controls = newControls(world.camera);
         world.objects = newObjects();
         world.scene = newScene(world.objects);
         world.renderer = newRenderer();
         world.stats = newStats();
+        world.clock = new THREE.Clock();
 
         world.viewPort = {
             width:  window.innerWidth,
@@ -97,6 +108,12 @@
         document.body.appendChild(world.stats.domElement);
     }
 
+    function render() {
+
+        world.controls.update(world.clock.getDelta());
+        world.renderer.render(world.scene, world.camera);
+    }
+
     function animate() {
 
         world.stats.begin();
@@ -106,7 +123,7 @@
         world.objects.cube.rotation.x += 0.01;
         world.objects.cube.rotation.y += 0.02;
 
-        world.renderer.render(world.scene, world.camera);
+        render();
 
         world.stats.end();
     }
@@ -127,6 +144,10 @@
 
         world.renderer.setSize( window.innerWidth, window.innerHeight );
         world.renderer.render( world.scene, world.camera );
+
+        world.controls.handleResize();
+
+        render();
     });
 
 })();
