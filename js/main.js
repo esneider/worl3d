@@ -27,9 +27,24 @@
         objs.axes = new THREE.AxisHelper();
         objs.axes.scale.set(100, 100, 100);
 
-        var geometry = new THREE.CubeGeometry(200, 200, 200);
-        var material = new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true});
-        objs.cube = new THREE.Mesh(geometry, material);
+        var c_geometry = new THREE.CubeGeometry(200, 200, 200);
+        var c_material = new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true});
+        objs.cube = new THREE.Mesh(c_geometry, c_material);
+
+        var side = 100, scale = 8.0;
+        var t_geometry = new THREE.PlaneGeometry(2000, 2000, side, side);
+        var t_material = new THREE.MeshBasicMaterial({color: 0xffffff, wireframe: true});
+
+        for (var x = 0, i = 0; x <= side; x++) {
+            for (var y = 0; y <= side; y++, i++) {
+                t_geometry.vertices[i].z = 100 * Math.sin(x / scale) * Math.sin(y / scale);
+            }
+        }
+
+        objs.terrain = new THREE.Mesh(t_geometry, t_material);
+        objs.terrain.lookAt(new THREE.Vector3(-0.2, 1, 0));
+
+        console.log(objs.terrain);
 
         return objs;
     }
@@ -52,7 +67,7 @@
         var renderer;
 
         if (window.WebGLRenderingContext) {
-            renderer = new THREE.WebGLRenderer();
+            renderer = new THREE.WebGLRenderer({antialias: true});
         } else {
             renderer = new THREE.CanvasRenderer();
         }
