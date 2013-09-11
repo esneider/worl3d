@@ -2,7 +2,7 @@
           strict:true, undef:true, unused:true, curly:true, browser:true,
           devel:true, jquery:true, indent:4, maxerr:50 */
 
-/* global THREE, requestAnimationFrame */
+/* global THREE, requestAnimationFrame, Stats */
 
 (function() {
 
@@ -67,12 +67,25 @@
         return renderer;
     }
 
+    function newStats() {
+
+        var stats = new Stats();
+
+        stats.setMode(1);
+        stats.domElement.style.position = 'absolute';
+        stats.domElement.style.left = '0px';
+        stats.domElement.style.top = '0px';
+
+        return stats;
+    }
+
     function initWorld() {
 
         world.camera = newCamera();
         world.objects = newObjects();
         world.scene = newScene(world.objects);
         world.renderer = newRenderer();
+        world.stats = newStats();
 
         world.viewPort = {
             width:  window.innerWidth,
@@ -81,9 +94,12 @@
         };
 
         document.body.appendChild(world.renderer.domElement);
+        document.body.appendChild(world.stats.domElement);
     }
 
     function animate() {
+
+        world.stats.begin();
 
         requestAnimationFrame(animate);
 
@@ -91,6 +107,8 @@
         world.objects.cube.rotation.y += 0.02;
 
         world.renderer.render(world.scene, world.camera);
+
+        world.stats.end();
     }
 
     $(document).ready(function() {
