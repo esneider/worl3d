@@ -69,15 +69,16 @@
 
     function initWorld() {
 
-        world.viewPort = {
-            width:  window.innerWidth,
-            height: window.innerHeight
-        };
-
         world.camera = newCamera();
         world.objects = newObjects();
         world.scene = newScene(world.objects);
         world.renderer = newRenderer();
+
+        world.viewPort = {
+            width:  window.innerWidth,
+            height: window.innerHeight,
+            tanFOV: Math.tan(world.camera.fov * Math.PI / 360)
+        };
 
         document.body.appendChild(world.renderer.domElement);
     }
@@ -100,22 +101,14 @@
 
     $(window).resize(function() {
 
-        // var widthRatio  = window.innerWidth  / $(this).data("info").width;
-        // var heightRatio = window.innerHeight / $(this).data("info").height;
+        var tanFOV = world.viewPort.tanFOV * window.innerHeight / world.viewPort.height;
 
-        // var ratio = Math.min(widthRatio, heightRatio);
+        world.camera.aspect = window.innerWidth / window.innerHeight;
+        world.camera.fov = Math.atan(tanFOV) * 360 / Math.PI;
+        world.camera.updateProjectionMatrix();
 
-        // initCamera();
-
-        // camera.position.z *= ratio;
-
-        // camera.aspect = window.innerWidth / window.innerHeight;
-        // camera.updateProjectionMatrix();
-
-        // console.log(camera.position.z);
-
-        // renderer.setSize(window.innerWidth, window.innerHeight);
-        // renderer.render(scene, camera);
+        world.renderer.setSize( window.innerWidth, window.innerHeight );
+        world.renderer.render( world.scene, world.camera );
     });
 
 })();
