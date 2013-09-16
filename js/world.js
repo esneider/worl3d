@@ -1,3 +1,5 @@
+/* global define */
+
 define(
     [
         './world/window',
@@ -6,6 +8,8 @@ define(
         './world/controls'
     ],
     function(world) {
+
+        "use strict";
 
         world.render = function() {
 
