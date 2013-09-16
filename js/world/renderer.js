@@ -6,7 +6,7 @@ define(['./window', 'three', 'domReady'], function(world, THREE, domReady) {
 
     world.camera = function() {
 
-        var camera = new THREE.PerspectiveCamera(75, world.win.ratio, 1, 10000);
+        var camera = new THREE.PerspectiveCamera(75, world.win.ratio(), 1, 10000);
 
         camera.position.set(-1000, 0, 0);
 

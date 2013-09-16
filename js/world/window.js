@@ -25,7 +25,16 @@ define(function() {
 
     win.hasWebGL = function() {
 
-        return window.WebGLRenderingContext;
+        try {
+
+            if (!!window.WebGLRenderingContext) return false;
+
+            return !!document.createElement('canvas').getContext('experimental-webgl');
+
+        } catch(e) {
+
+            return false;
+        }
     }();
 
     win.initial = {
