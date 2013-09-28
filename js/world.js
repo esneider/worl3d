@@ -31,7 +31,6 @@ define(
             world.render();
         };
 
-        window.WORLD = world;
         return world;
     }
 );

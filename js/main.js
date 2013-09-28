@@ -50,18 +50,14 @@ require(['app/world', 'jquery', 'three', 'stats'], function(world, $, THREE, Sta
     function animate() {
 
         stats.begin();
-
         requestAnimationFrame(animate);
-
         world.render();
-
         stats.end();
     }
 
     $(document).ready(function() {
 
         document.body.appendChild(stats.domElement);
-
         animate();
     });
 

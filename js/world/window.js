@@ -4,7 +4,7 @@ define(function() {
 
     "use strict";
 
-    var world = {};
+    var world = window.WORLD = window.WORLD || {};
 
     var win = world.win = {};
 

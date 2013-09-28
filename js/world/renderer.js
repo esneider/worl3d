@@ -18,6 +18,15 @@ define(['./window', 'three', 'domReady'], function(world, THREE, domReady) {
         return new THREE.Scene();
     }();
 
+    world.light = function() {
+
+        var light = new THREE.AmbientLight(0x404040);
+
+        world.scene.add(light);
+
+        return light;
+    }();
+
     world.renderer = function () {
 
         var renderer;
